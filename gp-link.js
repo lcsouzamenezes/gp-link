@@ -2,7 +2,7 @@
   Current URL Change - jQuery Plugin (https://github.com/ucoder92/gp-link)
   Copyright (c) 2019 Ulugbek Nuriddinov (ucoder92@gmail.com)
   Licensed under the MIT license
-  Version: 1.0.1
+  Version: 1.0.0
 */
 (function ($) {
   var current_url = location.protocol + '//' + location.host + location.pathname;
