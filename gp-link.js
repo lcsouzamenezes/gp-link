@@ -1,5 +1,5 @@
 /*
-  Get Param Link Change - jQuery Plugin (https://github.com/ucoder92/gp-link)
+  Current URL Change - jQuery Plugin (https://github.com/ucoder92/gp-link)
   Copyright (c) 2019 Ulugbek Nuriddinov (ucoder92@gmail.com)
   Licensed under the MIT license
   Version: 1.0.1
