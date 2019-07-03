@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Get Param Link - Demo</title>
+  </head>
+  <body>
+    <h2>Full param (called by jQuery)</h2>
+    <ul>
+      <li>
+        <a href="javascript:void(0);" class="full">Param 1</a>
+      </li>
+      <li>
+        <a href="index.html?param=2" class="full">Param 2</a>
+      </li>
+      <li>
+        <a href="index.html?param=3" class="full">Param 3</a>
+      </li>
+      <li>
+        <a href="index.html?param=4" class="full">Param 4</a>
+      </li>
+    </ul>
+
+    <h2>Params with type and value</h2>
+
+    <p>
+      <button data-gplink-param="say" data-gplink-value="hello">
+        Custom Param 1 (say=hello)
+      </button>
+      <button data-gplink-param="color" data-gplink-value="green">
+        Custom Param 2 (color=green)
+      </button>
+      <button data-gplink-param="name" data-gplink-value="john">
+        Custom Param 3 (name=john)
+      </button>
+      <button data-gplink-param="page" data-gplink-value="about" data-gplink-full="current">
+        Custom Param 4 (name=john)
+      </button>
+      <button data-gplink-param="s" data-gplink-value="mykey" data-gplink-full="http://127.0.0.1:5500/about.html">
+        Custom Param 5 (name=john)
+      </button>
+    </p>
+
+
+    <h2>Mixed Params</h2>
+    <ul>
+      <li>
+        <a href="index.html?param=22" data-gplink-full="current">Param 22</a>
+      </li>
+      <li>
+        <span data-gplink-param="say" data-gplink-value="changed" style="cursor: pointer;">Custom Param</span>
+      </li>
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="gp-link.js"></script>
+    
+    <script>
+      $(document).ready(function() {
+        $('a.full').gplink({
+          'type': 'full',
+          'default': 'http://127.0.0.1:5500/index.html?param=10'
+        });
+      })
+    </script>
+  </body>
+</html>
