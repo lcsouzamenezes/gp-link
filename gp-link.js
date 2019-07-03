@@ -1,7 +1,7 @@
 /*
   Get Param Link Change - jQuery Plugin (https://github.com/ucoder92/gp-link)
   Copyright (c) 2019 Ulugbek Nuriddinov (ucoder92@gmail.com)
-  Licensed under the MIT license 
+  Licensed under the MIT license
   Version: 1.0.1
 */
 (function ($) {
@@ -10,7 +10,7 @@
   $.fn.gplink = function (configs) {
     this.click(function(e) {
       e.preventDefault();
-      var type = ''; 
+      var type = '';
       var link = '';
       var config = {};
       var href = $(this).attr('href');
@@ -20,7 +20,7 @@
       var value = '';
       var thisFull = $(this).attr('data-gplink-full');
       var full = '';
-      
+
       if(typeof configs === 'object') {
         config = configs;
       }
@@ -36,7 +36,7 @@
       } else if(config.default != undefined && config.default != '' && gplinkCheckURL(config.default)) {
         link = config.default;
       }
-      
+
       if(thisParam != undefined && thisParam != '') {
         param = thisParam;
       }
@@ -65,7 +65,7 @@
         } else {
           var location_href = window.location.href;
           var checkQuery = gplinkCheckGetQuery(param);
-          
+
           if (checkQuery === false) {
             if (location.search) {
               var url = location_href + '&' + param + '=' + value;
@@ -80,18 +80,39 @@
           }
         }
       }
-      
+
     });
   };
 
   var $find = $('[data-gplink-param], [data-gplink-full]');
-  
+
   if($find != undefined && $find.length > 0) {
     $find.gplink();
   }
 
+  var $rmfind = $('[data-gplink-rm]');
+
+  if($rmfind != undefined && $rmfind.length > 0) {
+    $(document).on('click', '[data-gplink-rm]', function(e) {
+      e.preventDefault();
+      var rm_param = $(this).attr('data-gplink-rm');
+
+      if(rm_param != undefined && rm_param != '') {
+
+        if(rm_param == 'clear-all') {
+          var this_url = location.protocol + '//' + location.host + location.pathname;
+          window.history.pushState({path:this_url}, '', this_url);
+        } else {
+          var location_href = window.location.href;
+          var link = gplinkRemoveParam(rm_param, location_href);
+          window.history.pushState({path:link}, '', link);
+        }
+      }
+    });
+  }
+
   function gplinkCheckURL(str) {
-    var pattern = new RegExp('^(https?:\\/\\/)?'+ 
+    var pattern = new RegExp('^(https?:\\/\\/)?'+
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
       '((\\d{1,3}\\.){3}\\d{1,3}))'+
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
@@ -100,20 +121,38 @@
     return !!pattern.test(str);
   }
 
+  function gplinkRemoveParam(key, sourceURL) {
+    var rtn = sourceURL.split("?")[0],
+        param,
+        params_arr = [],
+        queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+    if (queryString !== "") {
+        params_arr = queryString.split("&");
+        for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+            param = params_arr[i].split("=")[0];
+            if (param === key) {
+                params_arr.splice(i, 1);
+            }
+        }
+        rtn = rtn + "?" + params_arr.join("&");
+    }
+    return rtn;
+}
+
   function gplinkCheckGetQuery(name) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
-  
+
     for (var i = 0; i < vars.length; i++) {
       var pair = vars[i].split("=");
-  
+
       if (pair[0] == name) {
         return pair[1];
       } else if (pair[1] == "") {
         return true;
       }
     }
-  
+
     return (false);
   }
 }(jQuery));
