@@ -1,4 +1,4 @@
 # Current URL Change - jQuery Plugin
 **jQuery required**
 
-Work with current URL Change without refreshing page
+Work with current URL without refreshing page
