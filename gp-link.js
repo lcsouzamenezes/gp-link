@@ -134,7 +134,10 @@
                 params_arr.splice(i, 1);
             }
         }
-        rtn = rtn + "?" + params_arr.join("&");
+
+        if(params_arr.length > 0) {
+          rtn = rtn + "?" + params_arr.join("&");
+        }
     }
     return rtn;
 }
