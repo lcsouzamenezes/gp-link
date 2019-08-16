@@ -7,33 +7,37 @@
     <title>Get Param Link - Demo</title>
   </head>
   <body>
-    <h2>Full param (called by jQuery)</h2>
+    <h2>Set single parameter and remove others</h2>
+    <h4 style="color:red;">Warning: This method was called by jQuery</h4>
     <ul>
       <li>
-        <a href="javascript:void(0);" class="full">Param 1</a>
+        <a href="javascript:void(0);" class="full">All books</a> <b>(This link has not url, and gets default by config)</b>
       </li>
       <li>
-        <a href="index.html?param=2" class="full">Param 2</a>
+        <a href="index.html?books=popular" class="full">Popular books</a> <b>(Set "book" param: popular)</b>
       </li>
       <li>
-        <a href="index.html?param=3" class="full">Param 3</a>
+        <a href="index.html?books=favorite" class="full">Favorie books</a> <b>(Set "book" param: favorite)</b>
       </li>
       <li>
-        <a href="index.html?param=4" class="full">Param 4</a>
+        <a href="index.html?books=latest" class="full">Latest book</a> <b>(Set "book" param: latest)</b>
       </li>
     </ul>
 
-    <h2>Params with type and value</h2>
+    <hr>
+
+    <h2>Set parameter by attribute</h2>
+    <h4 style="color:red;">Warning: This method works with html attributes</h4>
 
     <p>
       <button data-gplink-param="say" data-gplink-value="hello">
-        Custom Param 1 (say=hello)
+        Say button (Add "say" param: hello)
       </button>
       <button data-gplink-param="color" data-gplink-value="green">
-        Custom Param 2 (color=green)
+        Color button (Add "color" param: green)
       </button>
       <button data-gplink-param="name" data-gplink-value="john">
-        Custom Param 3 (name=john)
+        Name button (Add "name" param: john)
       </button>
       <button data-gplink-param="page" data-gplink-value="about" data-gplink-full="current">
         Custom Param 4 (name=john)
@@ -71,7 +75,7 @@
       $(document).ready(function() {
         $('a.full').gplink({
           'type': 'full',
-          'default': 'http://127.0.0.1:5500/index.html?param=10'
+          'default': 'http://127.0.0.1:5500/index.html?books=all'
         });
       })
     </script>

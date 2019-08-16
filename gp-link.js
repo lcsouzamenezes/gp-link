@@ -2,8 +2,9 @@
   Current URL Change - jQuery Plugin (https://github.com/ucoder92/gp-link)
   Copyright (c) 2019 Ulugbek Nuriddinov (ucoder92@gmail.com)
   Licensed under the MIT license
-  Version: 1.0.0
+  Version: 1.1.0
 */
+
 (function ($) {
   var current_url = location.protocol + '//' + location.host + location.pathname;
 
@@ -64,7 +65,7 @@
           window.history.pushState({path:setURL}, '', setURL);
         } else {
           var location_href = window.location.href;
-          var checkQuery = gplinkCheckGetQuery(param);
+          var checkQuery = gplinkGetParam(param);
 
           if (checkQuery === false) {
             if (location.search) {
@@ -110,52 +111,76 @@
       }
     });
   }
+}(jQuery));
 
-  function gplinkCheckURL(str) {
-    var pattern = new RegExp('^(https?:\\/\\/)?'+
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
-      '((\\d{1,3}\\.){3}\\d{1,3}))'+
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
-      '(\\?[;&a-z\\d%_.~+=-]*)?'+
-      '(\\#[-a-z\\d_]*)?$','i');
-    return !!pattern.test(str);
-  }
-
-  function gplinkRemoveParam(key, sourceURL) {
-    var rtn = sourceURL.split("?")[0],
-        param,
-        params_arr = [],
-        queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
-    if (queryString !== "") {
-        params_arr = queryString.split("&");
-        for (var i = params_arr.length - 1; i >= 0; i -= 1) {
-            param = params_arr[i].split("=")[0];
-            if (param === key) {
-                params_arr.splice(i, 1);
-            }
-        }
-
-        if(params_arr.length > 0) {
-          rtn = rtn + "?" + params_arr.join("&");
-        }
-    }
-    return rtn;
+function gplinkCheckURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+
+    '(\\#[-a-z\\d_]*)?$','i');
+  return !!pattern.test(str);
 }
 
-  function gplinkCheckGetQuery(name) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
+function gplinkGetParam(name) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
 
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split("=");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
 
-      if (pair[0] == name) {
-        return pair[1];
-      } else if (pair[1] == "") {
-        return true;
-      }
+    if (pair[0] == name) {
+      return pair[1];
+    } else if (pair[1] == "") {
+      return true;
     }
-
-    return (false);
   }
-}(jQuery));
+
+  return (false);
+}
+
+function gplinkToggleParam(attr, value) {
+  var location_href = window.location.href;
+  var checkQuery = gplinkGetParam(attr);
+
+  if (checkQuery) {
+    var newURL = location_href.replace(attr + "=" + checkQuery, attr + "=" + value);
+    window.history.pushState({path:newURL}, '', newURL);
+  } else {
+    if (window.location.search) {
+      var newURL = location_href + '&' + attr + '=' + value;
+      window.history.pushState({path:newURL}, '', newURL);
+    } else {
+      var newURL = location_href + '?' + attr + '=' + value;
+      window.history.pushState({path:newURL}, '', newURL);
+    }
+  }
+};
+
+function gplinkRemoveParam(key, queryURL) {
+  if(queryURL != undefined && queryURL != '') {
+    var sourceURL = queryURL;
+  } else {
+    var sourceURL = window.location.href;
+  }
+
+  var rtn = sourceURL.split("?")[0],
+      param,
+      params_arr = [],
+      queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+  if (queryString !== "") {
+      params_arr = queryString.split("&");
+      for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+          param = params_arr[i].split("=")[0];
+          if (param === key) {
+              params_arr.splice(i, 1);
+          }
+      }
+
+      if(params_arr.length > 0) {
+        rtn = rtn + "?" + params_arr.join("&");
+      }
+  }
+  return rtn;
+}
