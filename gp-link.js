@@ -105,8 +105,7 @@
           window.history.pushState({path:this_url}, '', this_url);
         } else {
           var location_href = window.location.href;
-          var link = gplinkRemoveParam(rm_param, location_href);
-          window.history.pushState({path:link}, '', link);
+          gplinkRemoveParam(rm_param, location_href);
         }
       }
     });
@@ -165,7 +164,7 @@ function gplinkRemoveParam(key, queryURL) {
     var sourceURL = window.location.href;
   }
 
-  var rtn = sourceURL.split("?")[0],
+  var link = sourceURL.split("?")[0],
       param,
       params_arr = [],
       queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
@@ -179,8 +178,9 @@ function gplinkRemoveParam(key, queryURL) {
       }
 
       if(params_arr.length > 0) {
-        rtn = rtn + "?" + params_arr.join("&");
+        link = link + "?" + params_arr.join("&");
       }
   }
-  return rtn;
+  
+  window.history.pushState({path:link}, '', link);
 }
